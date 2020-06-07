@@ -1,0 +1,32 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint/eslint-plugin", "prettier"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:prettier/recommended"
+    ],
+  "rules": {
+    "prettier/prettier": "error",
+    "prefer-const": "error",
+    "no-var": "error",
+    "no-duplicate-imports": "error",
+    "no-trailing-spaces": "error",
+    "no-nested-ternary": "error",
+    "no-negated-condition": "error",
+    "no-multiple-empty-lines": "error",
+    "no-lonely-if": "error",
+    "jsx-quotes": ["error", "prefer-double"],
+    "camelcase": "warn",
+    "no-return-await": "error",
+    "no-empty-function": ["error", { "allow": ["constructors"] }]
+  }
+}
