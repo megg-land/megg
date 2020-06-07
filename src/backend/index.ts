@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, session } from "electron";
+import { isProd } from "../shared";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -14,9 +15,12 @@ const createWindow = (): void => {
     height: 600,
     width: 800,
     webPreferences: {
-      nodeIntegration: false,
+      devTools: !isProd,
       contextIsolation: true,
+      nodeIntegration: false,
       enableRemoteModule: false,
+      nodeIntegrationInWorker: false,
+      nodeIntegrationInSubFrames: false,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
@@ -25,7 +29,20 @@ const createWindow = (): void => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (!isProd) {
+    mainWindow.webContents.openDevTools();
+  }
+
+  if (isProd) {
+    session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+      callback({
+        responseHeaders: {
+          ...details.responseHeaders,
+          "Content-Security-Policy": ["script-src 'self';"],
+        },
+      });
+    });
+  }
 };
 
 // This method will be called when Electron has finished
