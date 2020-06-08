@@ -26,6 +26,15 @@
  * ```
  */
 
+import "react-hot-loader";
 import "./index.css";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./app";
 
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById("root"),
+);
