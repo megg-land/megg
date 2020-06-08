@@ -1,3 +1,4 @@
+import "./handlers";
 import { app, BrowserWindow, session } from "electron";
 import { isProd } from "../shared";
 
@@ -14,6 +15,7 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    frame: false,
     webPreferences: {
       devTools: !isProd,
       contextIsolation: true,
