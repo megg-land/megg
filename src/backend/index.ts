@@ -1,6 +1,6 @@
 import "./handlers";
-import { app, BrowserWindow, session } from "electron";
 import { isProd } from "../shared";
+import { app, BrowserWindow, session } from "electron";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -15,7 +15,7 @@ const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
-    frame: false,
+    center: true,
     webPreferences: {
       devTools: !isProd,
       contextIsolation: true,
@@ -26,6 +26,8 @@ const createWindow = (): void => {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
+
+  mainWindow.setMenu(null);
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
