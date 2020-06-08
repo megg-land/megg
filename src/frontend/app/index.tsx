@@ -2,6 +2,7 @@ import { hot } from "react-hot-loader";
 import React, { ReactNode } from "react";
 import { Channels, isProd } from "../../shared";
 const { api } = window;
+import { Button } from "antd";
 
 async function pingChannel1(): Promise<void> {
   const result = await api.invoke(Channels.CHANNEL1, "Ping channel 1");
@@ -17,8 +18,12 @@ class App extends React.Component {
   render(): ReactNode {
     return (
       <div>
-        <button onClick={pingChannel1}>Ping Channel 1</button>
-        <button onClick={pingChannel2}>Ping Channel 1</button>
+        <Button type="primary" onClick={pingChannel1}>
+          Ping Channel 1
+        </Button>
+        <Button type="primary" onClick={pingChannel2}>
+          Ping Channel 2
+        </Button>
       </div>
     );
   }
