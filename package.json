@@ -104,9 +104,10 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "antd": "^4.3.3",
+    "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hot-loader": "^4.12.21",
-    "electron-squirrel-startup": "^1.0.0"
+    "react-hot-loader": "^4.12.21"
   }
 }
