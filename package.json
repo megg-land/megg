@@ -104,6 +104,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "antd": "^4.3.3",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^16.13.1",
