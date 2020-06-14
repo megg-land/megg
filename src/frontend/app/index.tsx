@@ -1,18 +1,39 @@
 import { hot } from "react-hot-loader";
 import React, { ReactNode } from "react";
-import { Channels, isProd } from "../../shared";
-import { Button, DatePicker, Layout } from "antd";
+import { Button, Layout } from "antd";
+import { ChannelEnum } from "../../shared/enums/channel.enum";
+import { CloudProviderEnum } from "../../shared/enums/cloud-provider.enum";
+import { isProd } from "../../shared/constants";
 
 const { api } = window;
 
-async function pingChannel1(): Promise<void> {
-  const result = await api.invoke(Channels.CHANNEL1, "Ping channel 1");
-  console.log(result);
+async function login(): Promise<void> {
+  try {
+    await api.invoke(ChannelEnum.LOGIN, "123456");
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-async function pingChannel2(): Promise<void> {
-  const result = await api.invoke(Channels.CHANNEL2, "Ping channel 2");
-  console.log(result);
+async function createAccount(): Promise<void> {
+  try {
+    await api.invoke(ChannelEnum.CREATE_ACCOUNT, "123456", "123456");
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function saveCredentials(): Promise<void> {
+  try {
+    const result = await api.invoke(ChannelEnum.SAVE_CREDENTIAL, {
+      service: CloudProviderEnum.GCLOUD,
+      account: "account",
+      password: "password",
+    });
+    console.log(result);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 class App extends React.Component {
@@ -20,13 +41,15 @@ class App extends React.Component {
     return (
       <Layout className="layout">
         <div>
-          <Button type="primary" onClick={pingChannel1}>
-            Ping Channel 1
+          <Button type="primary" onClick={login}>
+            Login
           </Button>
-          <Button type="primary" onClick={pingChannel2}>
-            Ping Channel 2
+          <Button type="primary" onClick={createAccount}>
+            Create Account
           </Button>
-          <DatePicker />
+          <Button type="primary" onClick={saveCredentials}>
+            Save Credentials
+          </Button>
         </div>
       </Layout>
     );

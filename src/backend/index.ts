@@ -1,5 +1,5 @@
-import "./handlers";
-import { isProd } from "../shared";
+import "./services/handler.service";
+import { isDev, isProd } from "../shared/constants";
 import { app, BrowserWindow, session } from "electron";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -33,7 +33,7 @@ const createWindow = (): void => {
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  if (!isProd) {
+  if (isDev) {
     mainWindow.webContents.openDevTools();
   }
 

@@ -1,4 +1,4 @@
-import { Channels } from "../../shared/channels";
+import { ChannelEnum } from "../../shared/enums/channel.enum";
 
 declare global {
   interface Window {
@@ -7,5 +7,5 @@ declare global {
 }
 
 export interface IpcRendererApi {
-  invoke(channel: Channels, ...args: unknown[]): Promise<unknown>;
+  invoke(channel: ChannelEnum, ...args: unknown[]): Promise<unknown>;
 }

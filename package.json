@@ -64,7 +64,7 @@
                   "js": "./src/frontend/index.tsx",
                   "name": "main_window",
                   "preload": {
-                    "js": "./src/backend/preload/index.ts"
+                    "js": "./src/backend/services/preload.service.ts"
                   }
                 }
               ]
@@ -106,7 +106,9 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
     "antd": "^4.3.3",
+    "date-fns": "^2.14.0",
     "electron-squirrel-startup": "^1.0.0",
+    "keytar": "^6.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hot-loader": "^4.12.21"
