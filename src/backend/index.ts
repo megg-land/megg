@@ -1,5 +1,5 @@
 import "./services/handler.service";
-import { isDev, isProd } from "../shared/constants";
+import { isDev, isProd, megg } from "../shared/constants";
 import { app, BrowserWindow, session } from "electron";
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -11,11 +11,11 @@ if (require("electron-squirrel-startup")) {
 }
 
 const createWindow = (): void => {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
     center: true,
+    title: megg,
     webPreferences: {
       devTools: !isProd,
       contextIsolation: true,
@@ -28,11 +28,8 @@ const createWindow = (): void => {
   });
 
   mainWindow.setMenu(null);
-
-  // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  // Open the DevTools.
   if (isDev) {
     mainWindow.webContents.openDevTools();
   }
