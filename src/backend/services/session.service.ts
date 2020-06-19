@@ -4,19 +4,27 @@ import { SessionModel } from "../models/session.model";
 import { cookieExpirationTime, cookieName, cookieUrl } from "../../shared/constants";
 
 export async function getSession(): Promise<SessionModel> {
-  const cookie = (await session.defaultSession.cookies.get({ url: cookieUrl, name: cookieName }))[0];
+  const cookies = await session.defaultSession.cookies.get({ url: cookieUrl, name: cookieName });
 
-  if (!cookie || isBefore(cookie.expirationDate, new Date())) {
+  if (!cookies || cookies.length !== 1) {
+    // TODO fix this error
     throw new Error("");
   }
 
-  return { secret: cookie.value };
+  const cookie = cookies[0];
+
+  if (!cookie || isBefore(cookie.expirationDate, new Date())) {
+    // TODO fix this error
+    throw new Error("");
+  }
+
+  return JSON.parse(cookie.value);
 }
 
-export async function setSession(secret: string): Promise<SessionModel> {
+export async function setSession(sessionModel: SessionModel): Promise<SessionModel> {
   await session.defaultSession.cookies.set({
     url: cookieUrl,
-    value: secret,
+    value: JSON.stringify(sessionModel),
     name: cookieName,
     httpOnly: true,
     secure: true,
