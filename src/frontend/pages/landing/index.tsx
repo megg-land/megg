@@ -6,7 +6,7 @@ import { ChannelEnum } from "../../../shared/enums/channel.enum";
 
 const { api } = window;
 
-export default function Home(): React.ReactElement {
+export default function Landing(): React.ReactElement {
   const history = useHistory();
 
   useEffect(() => {

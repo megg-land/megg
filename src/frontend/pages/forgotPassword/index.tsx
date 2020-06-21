@@ -3,7 +3,7 @@ import { Button, Form, Input, Typography } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import QueueAnim from "rc-queue-anim";
 import { UserSwitchOutlined } from "@ant-design/icons/lib";
-import CentralizedCard from "../cantralizedCard";
+import CentralizedCard from "../../components/cantralizedCard";
 import { Store, StoreValue } from "antd/lib/form/interface";
 import { ChannelEnum } from "../../../shared/enums/channel.enum";
 import { RuleObject } from "antd/lib/form/index";

@@ -1,24 +1,25 @@
 import "./index.css";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import QueueAnim from "rc-queue-anim";
 import { Store } from "antd/lib/form/interface";
-import CentralizedCard from "../cantralizedCard";
+import CentralizedCard from "../../components/cantralizedCard";
 import { Link, useHistory } from "react-router-dom";
 import { LockOutlined, UnlockOutlined } from "@ant-design/icons/lib";
 import { ChannelEnum } from "../../../shared/enums/channel.enum";
 import { Button, Form, Input, notification, Typography } from "antd";
+import { AuthContext } from "../../context";
 
 const { api } = window;
 const { Text } = Typography;
 
 export default function Unlock(): React.ReactElement {
   const history = useHistory();
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     if (window.sessionStorage.getItem("newAccountCreated")) {
       window.sessionStorage.removeItem("newAccountCreated");
       notification.success({
-        key: "sucessAccout",
         message: "Account Created!",
         placement: "topRight",
       });
@@ -26,10 +27,9 @@ export default function Unlock(): React.ReactElement {
   });
 
   function openNotification(): void {
-    notification.close("errorUnlock");
+    notification.destroy();
 
     notification.error({
-      key: "errorUnlock",
       message: "Invalid Password!",
       placement: "topRight",
     });
@@ -38,6 +38,7 @@ export default function Unlock(): React.ReactElement {
   async function onFinish(form: Store): Promise<void> {
     if (await api.invoke(ChannelEnum.UNLOCK, form.password)) {
       notification.destroy();
+      authContext.setIsAuthenticated(true);
       history.push("/dashboard");
     } else {
       openNotification();
