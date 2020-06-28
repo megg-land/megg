@@ -4,7 +4,7 @@ import QueueAnim from "rc-queue-anim";
 import React, { ReactNode } from "react";
 
 interface Props {
-  children?: ReactNode;
+  children: ReactNode;
   iconCover: ReactNode;
   cardClass: string;
 }
