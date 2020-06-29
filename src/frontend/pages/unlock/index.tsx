@@ -7,7 +7,7 @@ import { Link, useHistory } from "react-router-dom";
 import { LockOutlined, UnlockOutlined } from "@ant-design/icons/lib";
 import { ChannelEnum } from "../../../shared/enums/channel.enum";
 import { Button, Form, Input, notification, Typography } from "antd";
-import { AuthContext } from "../../context";
+import { AuthContext } from "../../context/auth.context";
 
 const { api } = window;
 const { Text } = Typography;

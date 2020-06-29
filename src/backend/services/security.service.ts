@@ -13,15 +13,16 @@ export async function saveCredential(...args: unknown[]): Promise<boolean> {
   if (
     !credential ||
     !credential.password ||
-    !credential.accountAndService ||
-    !credential.accountAndService.account ||
-    !credential.accountAndService.service ||
-    !Object.values(CloudProviderEnum).includes(credential.accountAndService.service)
+    !credential.account ||
+    !credential.cloudProvider ||
+    !Object.values(CloudProviderEnum).includes(credential.cloudProvider)
   ) {
     return false;
   }
 
-  await setPassword(megg, v4(), encrypt(JSON.stringify(credential), (await getSession()).secret));
+  credential.id = v4();
+
+  await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), (await getSession()).secret));
   return true;
 }
 

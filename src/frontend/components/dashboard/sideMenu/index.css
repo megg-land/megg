@@ -1,0 +1,7 @@
+.menu-height {
+    height: calc(100% - 64px);
+}
+
+.menu-first-item {
+    margin-top: 0 !important;
+}
