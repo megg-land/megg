@@ -1,9 +1,9 @@
 import { Breadcrumb, Card } from "antd";
 import React, { useContext, useEffect } from "react";
 import { BreadcumbsContext } from "../../context/breadcrumbs.context";
-import { AmazonOutlined, CloudOutlined } from "@ant-design/icons/lib";
+import { CloudOutlined, GoogleOutlined } from "@ant-design/icons/lib";
 
-export function AWS(): React.ReactElement {
+export function GCLOUD(): React.ReactElement {
   const breadcumbsContext = useContext(BreadcumbsContext);
 
   useEffect(() => {
@@ -12,12 +12,12 @@ export function AWS(): React.ReactElement {
         <CloudOutlined />
         <span>Cloud Credentials</span>
       </Breadcrumb.Item>,
-      <Breadcrumb.Item key="aws">
-        <AmazonOutlined />
-        <span>AWS</span>
+      <Breadcrumb.Item key="gcloud">
+        <GoogleOutlined />
+        <span>GCLOUD</span>
       </Breadcrumb.Item>,
     ]);
   }, []);
 
-  return <Card bordered={false}>AWS</Card>;
+  return <Card bordered={false}>GCLOUD</Card>;
 }

@@ -1,10 +1,13 @@
 import "./index.css";
 import React, { ReactNode, useState } from "react";
 import { Route } from "react-router-dom";
-import { Card, Layout } from "antd";
+import { Layout } from "antd";
 import Breadcrumbs from "../breadcrumb";
 import { BreadcumbsContext } from "../../../context/breadcrumbs.context";
-import { Aws } from "../../../pages/aws";
+import { AWS } from "../../../pages/aws";
+import { GCLOUD } from "../../../pages/gcloud";
+import { Bills } from "../../../pages/bills";
+import { DashboardContent } from "../../../pages/dashboardContent";
 
 export default function Content(): React.ReactElement {
   const [breadcrumbs, setBreadcrumbs] = useState<Array<ReactNode>>([]);
@@ -14,16 +17,16 @@ export default function Content(): React.ReactElement {
       <Layout.Content className="dashboard-content">
         <Breadcrumbs />
         <Route path="/dashboard/gcloud">
-          <Card bordered={false}>GCLOUD</Card>
+          <GCLOUD />
         </Route>
         <Route path="/dashboard/aws">
-          <Aws />
+          <AWS />
         </Route>
         <Route path="/dashboard/bills">
-          <Card bordered={false}>Bills</Card>
+          <Bills />
         </Route>
         <Route exact path="/dashboard">
-          <Card bordered={false}>Dashboard</Card>
+          <DashboardContent />
         </Route>
       </Layout.Content>
     </BreadcumbsContext.Provider>
