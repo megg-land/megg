@@ -17,7 +17,7 @@ export default function AccountCreation(): React.ReactElement {
   async function onFinish(form: Store): Promise<void> {
     if (await api.invoke(ChannelEnum.CREATE_ACCOUNT, form)) {
       window.sessionStorage.setItem("newAccountCreated", "true");
-      history.push("/unlock");
+      history.push("/login");
     }
   }
 
@@ -95,8 +95,8 @@ export default function AccountCreation(): React.ReactElement {
         </QueueAnim>
 
         <QueueAnim>
-          <div key="links" className="unlock-links">
-            <Link to="/unlock">Already Have an Account?</Link>
+          <div key="links" className="login-links">
+            <Link to="/login">Already Have an Account?</Link>
           </div>
         </QueueAnim>
       </Form>

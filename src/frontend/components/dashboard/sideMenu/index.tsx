@@ -6,7 +6,7 @@ import {
   DashboardOutlined,
   DollarCircleOutlined,
   GoogleOutlined,
-  LockOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons/lib";
 import { Layout, Menu } from "antd";
 import { useHistory } from "react-router-dom";
@@ -78,13 +78,13 @@ export default function SideMenu(props: Props): React.ReactElement {
         </Menu.Item>
         <Menu.Item
           key="6"
-          icon={<LockOutlined />}
+          icon={<LogoutOutlined />}
           onClick={(): void => {
             authContext.setIsAuthenticated(false);
-            history.push("/unlock");
+            history.push("/login");
           }}
         >
-          Lock
+          Log Out
         </Menu.Item>
       </Menu>
     </Layout.Sider>

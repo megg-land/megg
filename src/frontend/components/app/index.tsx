@@ -5,7 +5,7 @@ import { isProd } from "../../../shared/constants";
 import { hot } from "react-hot-loader";
 import ForgotPassword from "../../pages/forgotPassword";
 import AccountCreation from "../../pages/accountCreation";
-import Unlock from "../../pages/unlock";
+import Login from "../../pages/login";
 import Landing from "../../pages/landing";
 import { AuthContext } from "../../context/auth.context";
 import Dashboard from "../../pages/dashboard";
@@ -31,8 +31,8 @@ function App(): React.ReactElement {
               <Route path="/accountCreation">
                 <AccountCreation />
               </Route>
-              <Route path="/unlock">
-                <Unlock />
+              <Route path="/login">
+                <Login />
               </Route>
               <Route exact path="/">
                 <Landing />

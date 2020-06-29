@@ -14,7 +14,7 @@ export default function Landing(): React.ReactElement {
       if ((await api.invoke(ChannelEnum.IS_NEW_USER)) === true) {
         history.push("/accountCreation");
       } else {
-        history.push("/unlock");
+        history.push("/login");
       }
     };
 

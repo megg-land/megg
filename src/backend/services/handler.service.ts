@@ -1,9 +1,9 @@
 import { ipcMain, IpcMainInvokeEvent } from "electron";
 import { ChannelEnum } from "../../shared/enums/channel.enum";
-import { createAccount, isNewUser, saveCredential, unlock } from "./security.service";
+import { createAccount, isNewUser, saveCredential, login } from "./security.service";
 
-ipcMain.handle(ChannelEnum[ChannelEnum.UNLOCK], async (event: IpcMainInvokeEvent, ...args: unknown[]) => {
-  return unlock(...args);
+ipcMain.handle(ChannelEnum[ChannelEnum.LOG_IN], async (event: IpcMainInvokeEvent, ...args: unknown[]) => {
+  return login(...args);
 });
 
 ipcMain.handle(ChannelEnum[ChannelEnum.CREATE_ACCOUNT], async (event: IpcMainInvokeEvent, ...args: unknown[]) => {

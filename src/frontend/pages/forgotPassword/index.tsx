@@ -17,7 +17,7 @@ export default function ForgotPassword(): React.ReactElement {
   async function onFinish(form: Store): Promise<void> {
     if (await api.invoke(ChannelEnum.CREATE_ACCOUNT, form)) {
       window.sessionStorage.setItem("newAccountCreated", "true");
-      history.push("/unlock");
+      history.push("/login");
     }
   }
 
@@ -96,8 +96,8 @@ export default function ForgotPassword(): React.ReactElement {
         </QueueAnim>
 
         <QueueAnim>
-          <div key="links" className="unlock-links">
-            <Link to="/unlock">Remembered Your Password?</Link>
+          <div key="links" className="login-links">
+            <Link to="/login">Remembered Your Password?</Link>
           </div>
         </QueueAnim>
       </Form>

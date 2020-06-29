@@ -50,7 +50,7 @@ export async function createAccount(...args: unknown[]): Promise<boolean> {
   return true;
 }
 
-export async function unlock(...args: unknown[]): Promise<boolean> {
+export async function login(...args: unknown[]): Promise<boolean> {
   const password = args[0] as string;
 
   if (!password || password.length > 126) {
