@@ -11,6 +11,7 @@ import {
 import { Layout, Menu } from "antd";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../context/auth.context";
+import { SideMenuContext } from "../../../context/sideMenu.context";
 
 interface Props {
   children: ReactNode;
@@ -20,16 +21,24 @@ interface Props {
 export default function SideMenu(props: Props): React.ReactElement {
   const history = useHistory();
   const authContext = useContext(AuthContext);
+  const sideMenuContext = useContext(SideMenuContext);
 
   return (
     <Layout.Sider collapsible collapsed={props.isCollapsed} trigger={null}>
       {props.children}
-      <Menu mode="vertical" theme="light" defaultSelectedKeys={["1"]} className="menu-height">
+      <Menu
+        mode="vertical"
+        theme="light"
+        selectedKeys={sideMenuContext.selectedKeys}
+        defaultSelectedKeys={["1"]}
+        className="menu-height"
+      >
         <Menu.Item
           key="1"
           icon={<DashboardOutlined />}
           className="menu-first-item"
           onClick={(): void => {
+            sideMenuContext.setSelectedKeys(["1"]);
             history.push("/dashboard");
           }}
         >
@@ -40,6 +49,7 @@ export default function SideMenu(props: Props): React.ReactElement {
             key="3"
             icon={<AmazonOutlined />}
             onClick={(): void => {
+              sideMenuContext.setSelectedKeys(["3"]);
               history.push("/dashboard/aws");
             }}
           >
@@ -49,6 +59,7 @@ export default function SideMenu(props: Props): React.ReactElement {
             key="4"
             icon={<GoogleOutlined />}
             onClick={(): void => {
+              sideMenuContext.setSelectedKeys(["4"]);
               history.push("/dashboard/gcloud");
             }}
           >
@@ -59,6 +70,7 @@ export default function SideMenu(props: Props): React.ReactElement {
           key="5"
           icon={<DollarCircleOutlined />}
           onClick={(): void => {
+            sideMenuContext.setSelectedKeys(["5"]);
             history.push("/dashboard/bills");
           }}
         >
