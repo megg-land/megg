@@ -4,10 +4,10 @@ import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 import { CloudOutlined, GoogleOutlined } from "@ant-design/icons/lib";
 
 export function GCLOUD(): React.ReactElement {
-  const breadcumbsContext = useContext(BreadcrumbsContext);
+  const breadcrumbsContext = useContext(BreadcrumbsContext);
 
   useEffect(() => {
-    breadcumbsContext.setBreadcrumbs([
+    breadcrumbsContext.setBreadcrumbs([
       <Breadcrumb.Item key="cloudCredentials">
         <CloudOutlined />
         <span>Cloud Credentials</span>

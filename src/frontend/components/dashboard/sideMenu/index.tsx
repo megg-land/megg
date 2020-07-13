@@ -1,13 +1,6 @@
 import "./index.css";
 import React, { ReactNode, useContext } from "react";
-import {
-  AmazonOutlined,
-  CloudOutlined,
-  DashboardOutlined,
-  DollarCircleOutlined,
-  GoogleOutlined,
-  LogoutOutlined,
-} from "@ant-design/icons/lib";
+import { DashboardOutlined, DollarCircleOutlined, LogoutOutlined, CloudOutlined } from "@ant-design/icons/lib";
 import { Layout, Menu } from "antd";
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../../context/auth.context";
@@ -44,40 +37,29 @@ export default function SideMenu(props: Props): React.ReactElement {
         >
           Dashboard
         </Menu.Item>
-        <Menu.SubMenu key="2" icon={<CloudOutlined />} title="Cloud Credentials">
-          <Menu.Item
-            key="3"
-            icon={<AmazonOutlined />}
-            onClick={(): void => {
-              sideMenuContext.setSelectedKeys(["3"]);
-              history.push("/dashboard/aws");
-            }}
-          >
-            AWS
-          </Menu.Item>
-          <Menu.Item
-            key="4"
-            icon={<GoogleOutlined />}
-            onClick={(): void => {
-              sideMenuContext.setSelectedKeys(["4"]);
-              history.push("/dashboard/gcloud");
-            }}
-          >
-            GCLOUD
-          </Menu.Item>
-        </Menu.SubMenu>
         <Menu.Item
-          key="5"
+          key="2"
+          icon={<CloudOutlined />}
+          className="menu-first-item"
+          onClick={(): void => {
+            sideMenuContext.setSelectedKeys(["2"]);
+            history.push("/dashboard/cloud-credentials");
+          }}
+        >
+          Cloud Credentials
+        </Menu.Item>
+        <Menu.Item
+          key="3"
           icon={<DollarCircleOutlined />}
           onClick={(): void => {
-            sideMenuContext.setSelectedKeys(["5"]);
+            sideMenuContext.setSelectedKeys(["3"]);
             history.push("/dashboard/bills");
           }}
         >
           Bills
         </Menu.Item>
         <Menu.Item
-          key="6"
+          key="4"
           icon={<LogoutOutlined />}
           onClick={(): void => {
             authContext.setIsAuthenticated(false);

@@ -1,0 +1,14 @@
+.cloud-credential-card {
+    width: 90px;
+    display: flex;
+    place-content: center;
+}
+
+.cloud-credential-card-icon {
+    font-size: 35px;
+}
+
+.cloud-credential-card:hover {
+    color: #1890ff;
+    cursor: pointer;
+}
