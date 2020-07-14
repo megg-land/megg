@@ -1,0 +1,25 @@
+.aws-button-position {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.aws-button-margin {
+    margin-right: 10px;
+}
+
+.aws-favorite {
+    display: inline-block;
+    float: right;
+}
+
+.aws-tooltip {
+    margin: 0 8px;
+}
+
+.aws-select-min-width {
+    min-width: 115px;
+}
+
+.aws-select-display {
+    display: inline-block;
+}

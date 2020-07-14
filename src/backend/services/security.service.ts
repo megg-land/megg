@@ -3,18 +3,59 @@ import { megg } from "../../shared/constants";
 import { decrypt, encrypt, hash } from "./crypto.service";
 import { getSession, setSession } from "./session.service";
 import { deletePassword, findCredentials, setPassword } from "keytar";
-import { CredentialModel } from "../../shared/models/credential.model";
+import { CredentialModel, isCredentialModel } from "../../shared/models/credential.model";
 import { CloudProviderEnum } from "../../shared/enums/cloud-provider.enum";
 import { AccountCreationModel } from "../models/accountCreation.model";
 
-export async function saveCredential(...args: unknown[]): Promise<boolean> {
-  const credential = args[0] as CredentialModel;
+async function getSecret(): Promise<string> {
+  return (await getSession()).secret;
+}
+
+export async function getAllCredentias(): Promise<CredentialModel[]> {
+  const secret = await getSecret();
+
+  return (await findCredentials(megg))
+    .map(encryptedCredential => {
+      try {
+        const credentialModel = JSON.parse(decrypt(encryptedCredential.password, secret));
+
+        if (isCredentialModel(credentialModel)) {
+          return credentialModel;
+        }
+      } catch (e) {
+        // TODO cant decrypt data and should throw exception.
+        if (e.message === "Unsupported state or unable to authenticate data") {
+          console.debug(e.message);
+        }
+      }
+    })
+    .filter(e => e !== undefined)
+    .sort((x, y) => Number(y.favorite) - Number(x.favorite));
+}
+
+export async function setFavorite(id: string): Promise<void> {
+  if (!id) {
+    return;
+  }
+
+  const secret = await getSecret();
+
+  for (const credential of await getAllCredentias()) {
+    credential.favorite = credential.id === id;
+    await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), secret));
+  }
+}
+
+export async function saveCredential(credential: CredentialModel): Promise<boolean> {
+  const secret = await getSecret();
 
   if (
     !credential ||
     !credential.password ||
     !credential.account ||
     !credential.cloudProvider ||
+    credential.favorite === null ||
+    credential.favorite === undefined ||
     !Object.values(CloudProviderEnum).includes(credential.cloudProvider)
   ) {
     return false;
@@ -22,13 +63,40 @@ export async function saveCredential(...args: unknown[]): Promise<boolean> {
 
   credential.id = v4();
 
-  await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), (await getSession()).secret));
+  const allCredentials = await getAllCredentias();
+
+  if (allCredentials.length < 1) {
+    credential.favorite = true;
+  }
+
+  if (credential.favorite) {
+    for (const credential of allCredentials) {
+      credential.favorite = false;
+      await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), secret));
+    }
+  }
+
+  await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), secret));
   return true;
 }
 
-export async function createAccount(...args: unknown[]): Promise<boolean> {
-  const accountCreationModel = args[0] as AccountCreationModel;
+export async function getFavoriteCredential(): Promise<CredentialModel> {
+  return (await getAllCredentias()).find(credential => credential.favorite);
+}
 
+export async function deleteCredential(id: string): Promise<boolean> {
+  if (!id) {
+    return false;
+  }
+
+  if ((await getFavoriteCredential()).id === id) {
+    await setFavorite((await getAllCredentias()).find(c => c.id !== id)?.id);
+  }
+
+  return deletePassword(megg, id);
+}
+
+export async function createAccount(accountCreationModel: AccountCreationModel): Promise<boolean> {
   if (
     !accountCreationModel ||
     !accountCreationModel.username ||
@@ -50,9 +118,7 @@ export async function createAccount(...args: unknown[]): Promise<boolean> {
   return true;
 }
 
-export async function login(...args: unknown[]): Promise<boolean> {
-  const password = args[0] as string;
-
+export async function login(password: string): Promise<boolean> {
   if (!password || password.length > 126) {
     return false;
   }

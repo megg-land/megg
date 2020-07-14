@@ -4,10 +4,10 @@ import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 import { DollarCircleOutlined } from "@ant-design/icons/lib";
 
 export function Bills(): React.ReactElement {
-  const breadcumbsContext = useContext(BreadcrumbsContext);
+  const breadcrumbsContext = useContext(BreadcrumbsContext);
 
   useEffect(() => {
-    breadcumbsContext.setBreadcrumbs([
+    breadcrumbsContext.setBreadcrumbs([
       <Breadcrumb.Item key="bills">
         <DollarCircleOutlined />
         <span>Bills</span>

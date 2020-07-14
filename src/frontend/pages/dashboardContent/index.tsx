@@ -3,10 +3,10 @@ import React, { useContext, useEffect } from "react";
 import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 
 export function DashboardContent(): React.ReactElement {
-  const breadcumbsContext = useContext(BreadcrumbsContext);
+  const breadcrumbsContext = useContext(BreadcrumbsContext);
 
   useEffect(() => {
-    breadcumbsContext.setBreadcrumbs([]);
+    breadcrumbsContext.setBreadcrumbs([]);
   }, []);
 
   return <Card bordered={false}>Dashboard</Card>;
