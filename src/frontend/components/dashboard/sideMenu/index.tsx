@@ -1,9 +1,8 @@
 import "./index.css";
 import React, { ReactNode, useContext } from "react";
-import { DashboardOutlined, DollarCircleOutlined, LogoutOutlined, CloudOutlined } from "@ant-design/icons/lib";
+import { CloudOutlined, DashboardOutlined, DollarCircleOutlined, LogoutOutlined } from "@ant-design/icons/lib";
 import { Layout, Menu } from "antd";
 import { useHistory } from "react-router-dom";
-import { AuthContext } from "../../../context/auth.context";
 import { SideMenuContext } from "../../../context/sideMenu.context";
 
 interface Props {
@@ -13,7 +12,6 @@ interface Props {
 
 export default function SideMenu(props: Props): React.ReactElement {
   const history = useHistory();
-  const authContext = useContext(AuthContext);
   const sideMenuContext = useContext(SideMenuContext);
 
   return (
@@ -62,7 +60,6 @@ export default function SideMenu(props: Props): React.ReactElement {
           key="4"
           icon={<LogoutOutlined />}
           onClick={(): void => {
-            authContext.setIsAuthenticated(false);
             history.push("/login");
           }}
         >
