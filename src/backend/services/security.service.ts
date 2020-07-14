@@ -7,8 +7,12 @@ import { CredentialModel, isCredentialModel } from "../../shared/models/credenti
 import { CloudProviderEnum } from "../../shared/enums/cloud-provider.enum";
 import { AccountCreationModel } from "../models/accountCreation.model";
 
+async function getSecret(): Promise<string> {
+  return (await getSession()).secret;
+}
+
 export async function getAllCredentias(): Promise<CredentialModel[]> {
-  const secret = (await getSession()).secret;
+  const secret = await getSecret();
 
   return (await findCredentials(megg))
     .map(encryptedCredential => {
@@ -29,8 +33,21 @@ export async function getAllCredentias(): Promise<CredentialModel[]> {
     .sort((x, y) => Number(y.favorite) - Number(x.favorite));
 }
 
+export async function setFavorite(id: string): Promise<void> {
+  if (!id) {
+    return;
+  }
+
+  const secret = await getSecret();
+
+  for (const credential of await getAllCredentias()) {
+    credential.favorite = credential.id === id;
+    await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), secret));
+  }
+}
+
 export async function saveCredential(credential: CredentialModel): Promise<boolean> {
-  const secret = (await getSession()).secret;
+  const secret = await getSecret();
 
   if (
     !credential ||
@@ -46,8 +63,14 @@ export async function saveCredential(credential: CredentialModel): Promise<boole
 
   credential.id = v4();
 
+  const allCredentials = await getAllCredentias();
+
+  if (allCredentials.length < 1) {
+    credential.favorite = true;
+  }
+
   if (credential.favorite) {
-    for (const credential of await getAllCredentias()) {
+    for (const credential of allCredentials) {
       credential.favorite = false;
       await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), secret));
     }
@@ -57,13 +80,20 @@ export async function saveCredential(credential: CredentialModel): Promise<boole
   return true;
 }
 
+export async function getFavoriteCredential(): Promise<CredentialModel> {
+  return (await getAllCredentias()).find(credential => credential.favorite);
+}
+
 export async function deleteCredential(id: string): Promise<boolean> {
   if (!id) {
     return false;
   }
 
-  await deletePassword(megg, id);
-  return true;
+  if ((await getFavoriteCredential()).id === id) {
+    await setFavorite((await getAllCredentias()).find(c => c.id !== id)?.id);
+  }
+
+  return deletePassword(megg, id);
 }
 
 export async function createAccount(accountCreationModel: AccountCreationModel): Promise<boolean> {
@@ -113,17 +143,4 @@ export async function login(password: string): Promise<boolean> {
 
 export async function isNewUser(): Promise<boolean> {
   return (await findCredentials(megg)).length < 1;
-}
-
-export async function setFavorite(id: string): Promise<void> {
-  if (!id) {
-    return;
-  }
-
-  const secret = (await getSession()).secret;
-
-  for (const credential of await getAllCredentias()) {
-    credential.favorite = credential.id === id;
-    await setPassword(megg, credential.id, encrypt(JSON.stringify(credential), secret));
-  }
 }
