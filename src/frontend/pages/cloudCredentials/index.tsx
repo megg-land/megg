@@ -5,6 +5,8 @@ import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 import { AmazonOutlined, CloudOutlined, DeleteOutlined, StarOutlined, WarningOutlined } from "@ant-design/icons/lib";
 import { ChannelEnum } from "../../../shared/enums/channel.enum";
 import { useHistory } from "react-router-dom";
+import { FavoriteContext } from "../../context/favorite.context";
+import { CredentialModel } from "../../../shared/models/credential.model";
 
 const { api } = window;
 
@@ -12,6 +14,7 @@ export function CloudCredentials(): React.ReactElement {
   const history = useHistory();
   const [credentials, setCredentials] = useState([]);
   const breadcrumbsContext = useContext(BreadcrumbsContext);
+  const favoriteContext = useContext(FavoriteContext);
 
   useEffect(() => {
     if (window.sessionStorage.getItem("newCredentialCreated")) {
@@ -62,6 +65,7 @@ export function CloudCredentials(): React.ReactElement {
                   if (!record.favorite) {
                     await api.invoke(ChannelEnum.SET_FAVORITE, record.id);
                     setCredentials((await api.invoke(ChannelEnum.GET_ALL_CREDENTIALS)) as []);
+                    favoriteContext.setFavorite((await api.invoke(ChannelEnum.GET_FAVORITE)) as CredentialModel);
                   }
                 }}
               />
@@ -88,6 +92,9 @@ export function CloudCredentials(): React.ReactElement {
                           placement: "topRight",
                         });
                         setCredentials((await api.invoke(ChannelEnum.GET_ALL_CREDENTIALS)) as []);
+                        if (record.favorite) {
+                          favoriteContext.setFavorite((await api.invoke(ChannelEnum.GET_FAVORITE)) as CredentialModel);
+                        }
                       } else {
                         notification.error({
                           message: "Error Deleting Credential!",

@@ -8,11 +8,14 @@ import QueueAnim from "rc-queue-anim";
 import { Store } from "antd/lib/form/interface";
 import { ChannelEnum } from "../../../shared/enums/channel.enum";
 import { CloudProviderEnum } from "../../../shared/enums/cloud-provider.enum";
+import { FavoriteContext } from "../../context/favorite.context";
+import { CredentialModel } from "../../../shared/models/credential.model";
 
 const { api } = window;
 
 export function AWS(): React.ReactElement {
   const history = useHistory();
+  const favoriteContext = useContext(FavoriteContext);
   const breadcrumbsContext = useContext(BreadcrumbsContext);
 
   function openNotification(): void {
@@ -33,6 +36,7 @@ export function AWS(): React.ReactElement {
         password: form.accessKeySecret,
       })
     ) {
+      favoriteContext.setFavorite((await api.invoke(ChannelEnum.GET_FAVORITE)) as CredentialModel);
       notification.destroy();
       window.sessionStorage.setItem("newCredentialCreated", "true");
       history.push("/dashboard/cloud-credentials");

@@ -3,12 +3,15 @@ import { Layout } from "antd";
 import Header from "../../components/dashboard/header";
 import SideMenu from "../../components/dashboard/sideMenu";
 import Content from "../../components/dashboard/content";
-import SelectedCredential from "../../components/dashboard/selectedCredential";
+import FavoriteCredential from "../../components/dashboard/favoriteCredential";
 import { SideMenuContext } from "../../context/sideMenu.context";
+import { CredentialModel } from "../../../shared/models/credential.model";
+import { FavoriteContext } from "../../context/favorite.context";
 
 export default function Dashboard(): React.ReactElement {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [selectedKeys, setSelectedKeys] = useState<string[]>(["1"]);
+  const [favorite, setFavorite] = useState<CredentialModel | null>(null);
 
   function toggleIsCollapsed(): void {
     setIsCollapsed(!isCollapsed);
@@ -16,15 +19,17 @@ export default function Dashboard(): React.ReactElement {
 
   return (
     <Layout className="height100">
-      <SideMenuContext.Provider value={{ selectedKeys: selectedKeys, setSelectedKeys: setSelectedKeys }}>
-        <SideMenu isCollapsed={isCollapsed}>
-          <SelectedCredential />
-        </SideMenu>
-        <Layout>
-          <Header isCollapsed={isCollapsed} toggleIsCollapsed={toggleIsCollapsed} />
-          <Content />
-        </Layout>
-      </SideMenuContext.Provider>
+      <FavoriteContext.Provider value={{ favorite: favorite, setFavorite: setFavorite }}>
+        <SideMenuContext.Provider value={{ selectedKeys: selectedKeys, setSelectedKeys: setSelectedKeys }}>
+          <SideMenu isCollapsed={isCollapsed}>
+            <FavoriteCredential isCollapsed={isCollapsed} />
+          </SideMenu>
+          <Layout>
+            <Header isCollapsed={isCollapsed} toggleIsCollapsed={toggleIsCollapsed} />
+            <Content />
+          </Layout>
+        </SideMenuContext.Provider>
+      </FavoriteContext.Provider>
     </Layout>
   );
 }

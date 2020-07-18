@@ -81,7 +81,13 @@ export async function saveCredential(credential: CredentialModel): Promise<boole
 }
 
 export async function getFavoriteCredential(): Promise<CredentialModel> {
-  return (await getAllCredentias()).find(credential => credential.favorite);
+  const favorite = (await getAllCredentias()).find(credential => credential.favorite);
+
+  if (favorite) {
+    favorite.password = null;
+  }
+
+  return favorite;
 }
 
 export async function deleteCredential(id: string): Promise<boolean> {
