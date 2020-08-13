@@ -47,6 +47,6 @@ ipcMain.handle(ChannelEnum[ChannelEnum.SET_FAVORITE], async (event: IpcMainInvok
   return setFavorite(id);
 });
 
-ipcMain.handle(ChannelEnum[ChannelEnum.GET_FAVORITE], async (event: IpcMainInvokeEvent, id: string) => {
+ipcMain.handle(ChannelEnum[ChannelEnum.GET_FAVORITE], async () => {
   return getFavoriteCredential();
 });

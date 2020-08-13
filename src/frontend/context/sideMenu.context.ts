@@ -1,7 +1,9 @@
 import { createContext } from "react";
-import { SideMenuContextModel } from "../model/sideMenu.model";
 
-export const SideMenuContext = createContext<SideMenuContextModel>({
+export const SideMenuContext = createContext<{
+  selectedKeys: string[];
+  setSelectedKeys(selectedKeys: string[]): void;
+}>({
   selectedKeys: [],
   setSelectedKeys: (selectedKeys: string[]) => {
     return selectedKeys;

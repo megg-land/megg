@@ -1,6 +1,6 @@
 import "./index.css";
 import { Breadcrumb, Button, Card, Checkbox, Form, Input, Layout, notification, Select, Tooltip } from "antd";
-import React, { SyntheticEvent, useContext, useEffect } from "react";
+import React, { SyntheticEvent, useContext, useEffect, useRef } from "react";
 import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 import { AmazonOutlined, CheckCircleOutlined, CloseCircleOutlined, CloudOutlined } from "@ant-design/icons/lib";
 import { useHistory } from "react-router-dom";
@@ -8,15 +8,17 @@ import QueueAnim from "rc-queue-anim";
 import { Store } from "antd/lib/form/interface";
 import { ChannelEnum } from "../../../shared/enums/channel.enum";
 import { CloudProviderEnum } from "../../../shared/enums/cloud-provider.enum";
-import { FavoriteContext } from "../../context/favorite.context";
+import { CredentialsContext } from "../../context/credentials.context";
+import { SelectedCredentialContext } from "../../context/selectedCredential.context";
 import { CredentialModel } from "../../../shared/models/credential.model";
 
 const { api } = window;
 
 export function AWS(): React.ReactElement {
-  const history = useHistory();
-  const favoriteContext = useContext(FavoriteContext);
-  const breadcrumbsContext = useContext(BreadcrumbsContext);
+  const history = useRef(useHistory());
+  const breadcrumbsContext = useRef(useContext(BreadcrumbsContext));
+  const credentialsContext = useContext(CredentialsContext);
+  const selectedCredentialContext = useContext(SelectedCredentialContext);
 
   function openNotification(): void {
     notification.destroy();
@@ -36,23 +38,29 @@ export function AWS(): React.ReactElement {
         password: form.accessKeySecret,
       })
     ) {
-      favoriteContext.setFavorite((await api.invoke(ChannelEnum.GET_FAVORITE)) as CredentialModel);
+      const credentials = (await api.invoke(ChannelEnum.GET_ALL_CREDENTIALS)) as CredentialModel[];
+      credentialsContext.setCredentials(credentials);
+
+      if (!selectedCredentialContext.credential) {
+        selectedCredentialContext.setCredential(credentials[0]);
+      }
+
       notification.destroy();
       window.sessionStorage.setItem("newCredentialCreated", "true");
-      history.push("/dashboard/cloud-credentials");
+      history.current.push("/dashboard/cloud-credentials");
     } else {
       openNotification();
     }
   }
 
   useEffect(() => {
-    breadcrumbsContext.setBreadcrumbs([
+    breadcrumbsContext.current.setBreadcrumbs([
       <Breadcrumb.Item
         key="cloudCredentials"
         href=""
         onClick={(event: SyntheticEvent): void => {
           event.preventDefault();
-          history.push("/dashboard/cloud-credentials");
+          history.current.push("/dashboard/cloud-credentials");
         }}
       >
         <CloudOutlined />
@@ -135,7 +143,7 @@ export function AWS(): React.ReactElement {
               icon={<CloseCircleOutlined />}
               onClick={(): void => {
                 notification.destroy();
-                history.push("/dashboard/cloud-credentials");
+                history.current.push("/dashboard/cloud-credentials");
               }}
             >
               Cancel
