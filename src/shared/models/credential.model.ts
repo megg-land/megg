@@ -9,5 +9,5 @@ export interface CredentialModel {
   favorite: boolean;
   cloudProvider: CloudProviderEnum;
   account: string;
-  password: string;
+  password: string | null;
 }

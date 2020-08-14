@@ -15,17 +15,15 @@
     }
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint/eslint-plugin", "prettier", "react-hooks"],
+  "plugins": ["@typescript-eslint", "prettier", "react-hooks"],
     "extends": [
       "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:import/errors",
-      "plugin:import/warnings",
+      "plugin:react/recommended",
       "plugin:prettier/recommended",
-      "plugin:react/recommended"
+      "plugin:@typescript-eslint/recommended"
     ],
   "rules": {
+    "react/prop-types": 0,
     "react/display-name": "off",
     "react-hooks/exhaustive-deps": "warn",
     "react-hooks/rules-of-hooks": "error",
@@ -34,7 +32,6 @@
     "no-var": "error",
     "no-duplicate-imports": "error",
     "no-trailing-spaces": "error",
-    "no-nested-ternary": "error",
     "no-negated-condition": "error",
     "no-multiple-empty-lines": "error",
     "no-lonely-if": "error",

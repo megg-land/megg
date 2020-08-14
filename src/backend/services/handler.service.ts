@@ -8,6 +8,7 @@ import {
   getAllCredentias,
   deleteCredential,
   setFavorite,
+  getFavoriteCredential,
 } from "./security.service";
 import { AccountCreationModel } from "../models/accountCreation.model";
 import { CredentialModel } from "../../shared/models/credential.model";
@@ -44,4 +45,8 @@ ipcMain.handle(ChannelEnum[ChannelEnum.GET_ALL_CREDENTIALS], async () => {
 
 ipcMain.handle(ChannelEnum[ChannelEnum.SET_FAVORITE], async (event: IpcMainInvokeEvent, id: string) => {
   return setFavorite(id);
+});
+
+ipcMain.handle(ChannelEnum[ChannelEnum.GET_FAVORITE], async () => {
+  return getFavoriteCredential();
 });

@@ -108,3 +108,5 @@ dist
 .webpack
 
 out
+
+src/**/*.js

@@ -1,13 +1,13 @@
 import { Breadcrumb, Card } from "antd";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 import { CloudOutlined, GoogleOutlined } from "@ant-design/icons/lib";
 
 export function GCLOUD(): React.ReactElement {
-  const breadcrumbsContext = useContext(BreadcrumbsContext);
+  const breadcrumbsContext = useRef(useContext(BreadcrumbsContext));
 
   useEffect(() => {
-    breadcrumbsContext.setBreadcrumbs([
+    breadcrumbsContext.current.setBreadcrumbs([
       <Breadcrumb.Item key="cloudCredentials">
         <CloudOutlined />
         <span>Cloud Credentials</span>

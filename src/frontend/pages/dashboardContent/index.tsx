@@ -1,12 +1,12 @@
 import { Card } from "antd";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 
 export function DashboardContent(): React.ReactElement {
-  const breadcrumbsContext = useContext(BreadcrumbsContext);
+  const breadcrumbsContext = useRef(useContext(BreadcrumbsContext));
 
   useEffect(() => {
-    breadcrumbsContext.setBreadcrumbs([]);
+    breadcrumbsContext.current.setBreadcrumbs([]);
   }, []);
 
   return <Card bordered={false}>Dashboard</Card>;

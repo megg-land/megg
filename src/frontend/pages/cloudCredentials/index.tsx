@@ -1,17 +1,26 @@
 import "./index.css";
 import { Breadcrumb, Card, Col, Divider, Layout, Modal, notification, Row, Table } from "antd";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { BreadcrumbsContext } from "../../context/breadcrumbs.context";
 import { AmazonOutlined, CloudOutlined, DeleteOutlined, StarOutlined, WarningOutlined } from "@ant-design/icons/lib";
 import { ChannelEnum } from "../../../shared/enums/channel.enum";
 import { useHistory } from "react-router-dom";
+import { SelectedCredentialContext } from "../../context/selectedCredential.context";
+import { CredentialsContext } from "../../context/credentials.context";
+import { CredentialModel } from "../../../shared/models/credential.model";
 
 const { api } = window;
 
 export function CloudCredentials(): React.ReactElement {
   const history = useHistory();
   const [credentials, setCredentials] = useState([]);
-  const breadcrumbsContext = useContext(BreadcrumbsContext);
+  const breadcrumbsContext = useRef(useContext(BreadcrumbsContext));
+  const credentialsContext = useContext(CredentialsContext);
+  const selectedCredentialContext = useContext(SelectedCredentialContext);
+
+  async function loadCredentials(): Promise<void> {
+    setCredentials((await api.invoke(ChannelEnum.GET_ALL_CREDENTIALS)) as []);
+  }
 
   useEffect(() => {
     if (window.sessionStorage.getItem("newCredentialCreated")) {
@@ -22,13 +31,9 @@ export function CloudCredentials(): React.ReactElement {
       });
     }
 
-    const getAllCredentials = async (): Promise<void> => {
-      setCredentials((await api.invoke(ChannelEnum.GET_ALL_CREDENTIALS)) as []);
-    };
+    loadCredentials();
 
-    getAllCredentials();
-
-    breadcrumbsContext.setBreadcrumbs([
+    breadcrumbsContext.current.setBreadcrumbs([
       <Breadcrumb.Item key="cloudCredentials">
         <CloudOutlined />
         <span>Cloud Credentials</span>
@@ -47,10 +52,7 @@ export function CloudCredentials(): React.ReactElement {
           {
             title: "Account",
             dataIndex: "account",
-          },
-          {
-            title: "Password",
-            dataIndex: "password",
+            ellipsis: true,
           },
           {
             title: "Favorite",
@@ -62,6 +64,7 @@ export function CloudCredentials(): React.ReactElement {
                   if (!record.favorite) {
                     await api.invoke(ChannelEnum.SET_FAVORITE, record.id);
                     setCredentials((await api.invoke(ChannelEnum.GET_ALL_CREDENTIALS)) as []);
+                    credentialsContext.setCredentials(credentials);
                   }
                 }}
               />
@@ -87,7 +90,14 @@ export function CloudCredentials(): React.ReactElement {
                           message: "Cloud Credential Deleted!",
                           placement: "topRight",
                         });
-                        setCredentials((await api.invoke(ChannelEnum.GET_ALL_CREDENTIALS)) as []);
+                        const loadedCredentials = (await api.invoke(
+                          ChannelEnum.GET_ALL_CREDENTIALS,
+                        )) as CredentialModel[];
+                        setCredentials(loadedCredentials);
+                        credentialsContext.setCredentials(loadedCredentials);
+                        if (record.id === selectedCredentialContext.credential.id) {
+                          selectedCredentialContext.setCredential(loadedCredentials[0]);
+                        }
                       } else {
                         notification.error({
                           message: "Error Deleting Credential!",
