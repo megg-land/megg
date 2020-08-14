@@ -1,4 +1,4 @@
-.favorite-credential {
+.selected-credential {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,4 +6,16 @@
     background: #141414;
     border-bottom: 1px solid #303030;
     border-right: 1px solid #303030;
+}
+
+.selected-credential-left-padding5 {
+    padding-left: 5px;
+}
+
+.selected-credential-left-padding14 {
+    padding-left: 4px;
+}
+
+.selected-credential-right-padding14 {
+    padding-right: 4px;
 }

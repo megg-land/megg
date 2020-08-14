@@ -12,6 +12,10 @@
   height: 100%;
 }
 
+.width100 {
+  width: 100%;
+}
+
 .no-margin-bottom {
   margin-bottom: 0;
 }
